@@ -4,10 +4,10 @@ import '../../../../core/error/failure.dart';
 import '../entities/user.dart';
 import '../repositories/user_repository.dart';
 
-class GetUsers {
+class GetUserById {
   final UserRepository userRepository;
 
-  GetUsers(this.userRepository);
+  GetUserById(this.userRepository);
 
-  Future<Either<Failure, List<User>>> call() => userRepository.getUsers();
+  Future<Either<Failure, User>> call(int id) => userRepository.getUser(id);
 }
