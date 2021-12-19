@@ -34,4 +34,19 @@ void main() {
 
     expect(result, userModels);
   });
+
+  test('should return a valid Json when a model a valid', () {
+    final userModel = userModels[0];
+
+    final jsonMap = {
+      "id": 1,
+      "name": "Test User 1",
+      "username": "Test Username 1",
+      "email": "testuser1@gmail.com",
+    };
+
+    final result = userModel.toJson();
+
+    expect(result, jsonMap);
+  });
 }
