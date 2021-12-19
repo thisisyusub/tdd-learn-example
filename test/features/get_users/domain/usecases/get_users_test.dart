@@ -5,7 +5,7 @@ import 'package:tdd_example/core/no_params.dart';
 import 'package:tdd_example/features/get_users/domain/usecases/get_users.dart';
 
 import 'mock_user_repository.mocks.dart';
-import 'mock_users.dart';
+import '../../../../core/mocks/mock_users.dart';
 
 void main() {
   late GetUsers usecase;
