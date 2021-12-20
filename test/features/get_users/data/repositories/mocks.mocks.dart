@@ -57,8 +57,8 @@ class MockUserLocalDataSource extends _i1.Mock
   }
 
   @override
-  _i4.Future<List<_i2.UserModel>> getLastUsersModel() =>
-      (super.noSuchMethod(Invocation.method(#getLastUsersModel, []),
+  _i4.Future<List<_i2.UserModel>> getLastUsers() =>
+      (super.noSuchMethod(Invocation.method(#getLastUsers, []),
               returnValue: Future<List<_i2.UserModel>>.value(<_i2.UserModel>[]))
           as _i4.Future<List<_i2.UserModel>>);
   @override

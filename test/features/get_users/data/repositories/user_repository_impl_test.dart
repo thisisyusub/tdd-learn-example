@@ -94,13 +94,13 @@ void main() {
       test(
         'should return last cached users when the cached data is present',
         () async {
-          when(mockUserLocalDataSource.getLastUsersModel())
+          when(mockUserLocalDataSource.getLastUsers())
               .thenAnswer((_) async => userModels);
 
           final result = await userRepositoryImpl.getUsers();
 
           verifyZeroInteractions(mockUserRemoteDataSource);
-          verify(mockUserLocalDataSource.getLastUsersModel());
+          verify(mockUserLocalDataSource.getLastUsers());
           expect(result, equals(Right(users)));
         },
       );
@@ -108,13 +108,13 @@ void main() {
       test(
         'should return [CacheFailure]  when there is no cached data',
         () async {
-          when(mockUserLocalDataSource.getLastUsersModel())
+          when(mockUserLocalDataSource.getLastUsers())
               .thenThrow(CacheException());
 
           final result = await userRepositoryImpl.getUsers();
 
           verifyZeroInteractions(mockUserRemoteDataSource);
-          verify(mockUserLocalDataSource.getLastUsersModel());
+          verify(mockUserLocalDataSource.getLastUsers());
           expect(result, equals(Left(CacheFailure())));
         },
       );

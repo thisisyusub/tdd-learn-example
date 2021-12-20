@@ -41,7 +41,7 @@ class UserRepositoryImpl implements UserRepository {
       }
     } else {
       try {
-        return Right(await localDataSource.getLastUsersModel());
+        return Right(await localDataSource.getLastUsers());
       } on CacheException {
         return Left(CacheFailure());
       }
