@@ -7,7 +7,7 @@ import 'package:tdd_example/features/get_users/data/repositories/user_repository
 import 'package:tdd_example/features/get_users/domain/entities/user.dart';
 
 import '../../../../core/mocks/mock_user_models.dart';
-import 'mock_data_sources.mocks.dart';
+import 'mocks.mocks.dart';
 
 void main() {
   late UserRepositoryImpl userRepositoryImpl;
