@@ -16,7 +16,7 @@ dependencies:
   equatable: ^2.0.3
   dartz: ^0.10.1
   connectivity_plus: ^2.1.0
-  retrofit: ^3.0.0
+  http: ^0.13.4
   shared_preferences: ^2.0.11
   cupertino_icons: ^1.0.2
   hive_flutter: ^1.1.0
@@ -27,8 +27,6 @@ dev_dependencies:
   mockito: ^5.0.16
   flutter_lints: ^1.0.0
   build_runner: ^2.1.7
-  hive_generator: ^1.1.1
-  retrofit_generator: ^3.0.0+2
 
 
 flutter:

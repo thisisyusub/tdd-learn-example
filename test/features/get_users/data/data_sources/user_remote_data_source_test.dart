@@ -1,54 +1,91 @@
 import 'dart:convert';
-import 'package:dio/dio.dart';
+import 'dart:io';
+
+import 'package:http/http.dart' as http;
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
+import 'package:tdd_example/core/error/exceptions.dart';
 import 'package:tdd_example/features/get_users/data/data_sources/user_remote_data_source.dart';
-import 'package:dio/dio.dart';
 import 'package:tdd_example/features/get_users/data/models/user_model.dart';
 
-import '../../../../core/mocks/mock_dio.mocks.dart';
+import '../../../../core/mocks/mock_http_client.mocks.dart';
 import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
-  late Dio mockDio;
-  late MockHttpClientAdapter mockHttpClientAdapter;
+  late MockClient mockClient;
   late UserRemoteDataSourceImpl dataSource;
 
   setUp(() {
-    mockDio = Dio();
-    mockHttpClientAdapter = MockHttpClientAdapter();
-    mockDio.options.baseUrl = 'https://jsonplaceholder.typicode.com';
-    mockDio.httpClientAdapter = mockHttpClientAdapter;
-    dataSource = UserRemoteDataSourceImpl(mockDio);
+    mockClient = MockClient();
+    dataSource = UserRemoteDataSourceImpl(mockClient);
   });
 
-  test('should perform a GET request to get users from an endpoint', () async {
-    const _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{};
-    final _headers = <String, dynamic>{};
-    final _data = <String, dynamic>{};
-
-    when(mockHttpClientAdapter.fetch(any, any, any)).thenAnswer(
-      (_) async => json.decode(
-        fixture('users_cached.json'),
-      ),
+  void _createMockClientStub(String body, int statusCode) {
+    when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
+      (_) async => http.Response(body, statusCode),
     );
-
-    final result = await dataSource.getUsers();
-
-    verify(mockDio.get('/users'));
-  });
-}
-
-RequestOptions _setStreamType<T>(RequestOptions requestOptions) {
-  if (T != dynamic &&
-      !(requestOptions.responseType == ResponseType.bytes ||
-          requestOptions.responseType == ResponseType.stream)) {
-    if (T == String) {
-      requestOptions.responseType = ResponseType.plain;
-    } else {
-      requestOptions.responseType = ResponseType.json;
-    }
   }
-  return requestOptions;
+
+  group('getUsers', () {
+    final usersJsonMap = json.decode(fixture('users.json')) as List<dynamic>;
+    final users = usersJsonMap.map((e) => UserModel.fromJson(e)).toList();
+
+    test('should return users list if request is successfull', () async {
+      _createMockClientStub(fixture('users.json'), 200);
+
+      final result = await dataSource.getUsers();
+
+      verify(
+        mockClient.get(
+          Uri.parse('https://jsonplaceholder.typicode.com/users/'),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+          },
+        ),
+      );
+
+      expect(result, equals(users));
+    });
+
+    test('should throw [ServerException] for response code is 404 or other',
+        () async {
+      _createMockClientStub('Something went wrong!', 404);
+
+      final call = dataSource.getUsers;
+
+      expect(() => call(), throwsA(const TypeMatcher<ServerException>()));
+    });
+  });
+
+  group('getUser', () {
+    final usersJsonMap = json.decode(fixture('users.json')) as List<dynamic>;
+    final user = UserModel.fromJson(usersJsonMap[0]);
+    const userId = 1;
+
+    test('should return users by id if request is successfull', () async {
+      _createMockClientStub(json.encode(usersJsonMap[0]), 200);
+
+      final result = await dataSource.getUser(userId);
+
+      verify(
+        mockClient.get(
+          Uri.parse('https://jsonplaceholder.typicode.com/users/$userId'),
+          headers: {
+            HttpHeaders.contentTypeHeader: 'application/json',
+          },
+        ),
+      );
+
+      expect(result, equals(user));
+    });
+
+    test('should throw [ServerException] for response code is 404 or other',
+        () async {
+      _createMockClientStub('Something went wrong!', 404);
+
+      final call = dataSource.getUser;
+
+      expect(() => call(userId), throwsA(const TypeMatcher<ServerException>()));
+    });
+  });
 }
