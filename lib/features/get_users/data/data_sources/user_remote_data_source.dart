@@ -1,10 +1,10 @@
-import 'dart:convert';
-import 'dart:io';
-
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
+import 'package:retrofit/http.dart';
 
 import '../../../../core/error/exceptions.dart';
 import '../models/user_model.dart';
+
+part 'user_remote_data_source.g.dart';
 
 abstract class UserRemoteDataSource {
   /// Calls the https://jsonplaceholder.typicode.com/users endpoint.
@@ -18,42 +18,56 @@ abstract class UserRemoteDataSource {
   Future<UserModel> getUser(int id);
 }
 
-class UserRemoteDataSourceImpl implements UserRemoteDataSource {
-  final http.Client client;
+@RestApi(baseUrl: 'https://jsonplaceholder.typicode.com/')
+abstract class UserRemoteDataSourceImpl implements UserRemoteDataSource {
+  factory UserRemoteDataSourceImpl(Dio dio, {String baseUrl}) =
+      _UserRemoteDataSourceImpl;
 
-  UserRemoteDataSourceImpl(this.client);
-
+  @GET('/users')
   @override
-  Future<List<UserModel>> getUsers() async {
-    final response = await client.get(
-      Uri.parse('https://jsonplaceholder.typicode.com/users/'),
-      headers: {
-        HttpHeaders.contentTypeHeader: 'application/json',
-      },
-    );
+  Future<List<UserModel>> getUsers();
 
-    if (response.statusCode == 200) {
-      final parsedResponse = json.decode(response.body) as List<dynamic>;
-
-      return parsedResponse.map((e) => UserModel.fromJson(e)).toList();
-    } else {
-      throw ServerException();
-    }
-  }
-
+  @GET('/users/{id}')
   @override
-  Future<UserModel> getUser(int id) async {
-    final response = await client.get(
-      Uri.parse('https://jsonplaceholder.typicode.com/users/$id'),
-      headers: {
-        HttpHeaders.contentTypeHeader: 'application/json',
-      },
-    );
-
-    if (response.statusCode == 200) {
-      return UserModel.fromJson(json.decode(response.body));
-    } else {
-      throw ServerException();
-    }
-  }
+  Future<UserModel> getUser(@Path() int id);
 }
+//
+// class UserRemoteDataSourceImpl implements UserRemoteDataSource {
+//   final http.Client client;
+//
+//   UserRemoteDataSourceImpl(this.client);
+//
+//   @override
+//   Future<List<UserModel>> getUsers() async {
+//     final response = await client.get(
+//       Uri.parse('https://jsonplaceholder.typicode.com/users/'),
+//       headers: {
+//         HttpHeaders.contentTypeHeader: 'application/json',
+//       },
+//     );
+//
+//     if (response.statusCode == 200) {
+//       final parsedResponse = json.decode(response.body) as List<dynamic>;
+//
+//       return parsedResponse.map((e) => UserModel.fromJson(e)).toList();
+//     } else {
+//       throw ServerException();
+//     }
+//   }
+//
+//   @override
+//   Future<UserModel> getUser(int id) async {
+//     final response = await client.get(
+//       Uri.parse('https://jsonplaceholder.typicode.com/users/$id'),
+//       headers: {
+//         HttpHeaders.contentTypeHeader: 'application/json',
+//       },
+//     );
+//
+//     if (response.statusCode == 200) {
+//       return UserModel.fromJson(json.decode(response.body));
+//     } else {
+//       throw ServerException();
+//     }
+//   }
+// }

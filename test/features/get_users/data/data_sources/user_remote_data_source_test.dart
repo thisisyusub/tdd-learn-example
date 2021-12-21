@@ -1,28 +1,38 @@
 import 'dart:convert';
-import 'dart:io';
 
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:tdd_example/core/error/exceptions.dart';
 import 'package:tdd_example/features/get_users/data/data_sources/user_remote_data_source.dart';
 import 'package:tdd_example/features/get_users/data/models/user_model.dart';
 
-import '../../../../core/mocks/mock_http_client.mocks.dart';
+import '../../../../core/mocks/mock_http_client_adapter.mocks.dart';
 import '../../../../fixtures/fixture_reader.dart';
 
 void main() {
-  late MockClient mockClient;
+  late MockHttpClientAdapter adapter;
   late UserRemoteDataSourceImpl dataSource;
 
   setUp(() {
-    mockClient = MockClient();
-    dataSource = UserRemoteDataSourceImpl(mockClient);
+    final dio = Dio();
+    adapter = MockHttpClientAdapter();
+    dio.httpClientAdapter = adapter;
+    dataSource = UserRemoteDataSourceImpl(dio);
   });
 
-  void _createMockClientStub(String body, int statusCode) {
-    when(mockClient.get(any, headers: anyNamed('headers'))).thenAnswer(
-      (_) async => http.Response(body, statusCode),
+  void createMockResponseStub(String body, int statusCode) {
+    final response = ResponseBody.fromString(
+      body,
+      statusCode,
+      headers: {
+        Headers.contentTypeHeader: [Headers.jsonContentType],
+      },
+    );
+
+    when(adapter.fetch(any, any, any)).thenAnswer(
+      (_) async {
+        return response;
+      },
     );
   }
 
@@ -30,30 +40,21 @@ void main() {
     final usersJsonMap = json.decode(fixture('users.json')) as List<dynamic>;
     final users = usersJsonMap.map((e) => UserModel.fromJson(e)).toList();
 
-    test('should return users list if request is successfull', () async {
-      _createMockClientStub(fixture('users.json'), 200);
+    test('should return users list if request is successful', () async {
+      createMockResponseStub(json.encode(usersJsonMap), 200);
 
       final result = await dataSource.getUsers();
-
-      verify(
-        mockClient.get(
-          Uri.parse('https://jsonplaceholder.typicode.com/users/'),
-          headers: {
-            HttpHeaders.contentTypeHeader: 'application/json',
-          },
-        ),
-      );
 
       expect(result, equals(users));
     });
 
     test('should throw [ServerException] for response code is 404 or other',
         () async {
-      _createMockClientStub('Something went wrong!', 404);
+      createMockResponseStub('Something went wrong!', 404);
 
       final call = dataSource.getUsers;
 
-      expect(() => call(), throwsA(const TypeMatcher<ServerException>()));
+      expect(() => call(), throwsA(const TypeMatcher<DioError>()));
     });
   });
 
@@ -62,30 +63,21 @@ void main() {
     final user = UserModel.fromJson(usersJsonMap[0]);
     const userId = 1;
 
-    test('should return users by id if request is successfull', () async {
-      _createMockClientStub(json.encode(usersJsonMap[0]), 200);
+    test('should return users by id if request is successful', () async {
+      createMockResponseStub(json.encode(usersJsonMap[0]), 200);
 
       final result = await dataSource.getUser(userId);
-
-      verify(
-        mockClient.get(
-          Uri.parse('https://jsonplaceholder.typicode.com/users/$userId'),
-          headers: {
-            HttpHeaders.contentTypeHeader: 'application/json',
-          },
-        ),
-      );
 
       expect(result, equals(user));
     });
 
     test('should throw [ServerException] for response code is 404 or other',
         () async {
-      _createMockClientStub('Something went wrong!', 404);
+      createMockResponseStub('Something went wrong!', 404);
 
       final call = dataSource.getUser;
 
-      expect(() => call(userId), throwsA(const TypeMatcher<ServerException>()));
+      expect(() => call(userId), throwsA(const TypeMatcher<DioError>()));
     });
   });
 }

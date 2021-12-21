@@ -1,14 +1,14 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'mock_dio_test.dart';
+part of 'user_remote_data_source.dart';
 
 // **************************************************************************
 // RetrofitGenerator
 // **************************************************************************
 
-class _RestClient implements RestClient {
-  _RestClient(this._dio, {this.baseUrl}) {
-    baseUrl ??= 'https://www.example.com';
+class _UserRemoteDataSourceImpl implements UserRemoteDataSourceImpl {
+  _UserRemoteDataSourceImpl(this._dio, {this.baseUrl}) {
+    baseUrl ??= 'https://jsonplaceholder.typicode.com/';
   }
 
   final Dio _dio;
@@ -16,7 +16,25 @@ class _RestClient implements RestClient {
   String? baseUrl;
 
   @override
-  Future<UserModel> getUser() async {
+  Future<List<UserModel>> getUsers() async {
+    const _extra = <String, dynamic>{};
+    final queryParameters = <String, dynamic>{};
+    final _headers = <String, dynamic>{};
+    final _data = <String, dynamic>{};
+    final _result = await _dio.fetch<List<dynamic>>(
+        _setStreamType<List<UserModel>>(
+            Options(method: 'GET', headers: _headers, extra: _extra)
+                .compose(_dio.options, '/users',
+                    queryParameters: queryParameters, data: _data)
+                .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
+    var value = _result.data!
+        .map((dynamic i) => UserModel.fromJson(i as Map<String, dynamic>))
+        .toList();
+    return value;
+  }
+
+  @override
+  Future<UserModel> getUser(id) async {
     const _extra = <String, dynamic>{};
     final queryParameters = <String, dynamic>{};
     final _headers = <String, dynamic>{};
@@ -24,7 +42,7 @@ class _RestClient implements RestClient {
     final _result = await _dio.fetch<Map<String, dynamic>>(
         _setStreamType<UserModel>(
             Options(method: 'GET', headers: _headers, extra: _extra)
-                .compose(_dio.options, '/user',
+                .compose(_dio.options, '/users/${id}',
                     queryParameters: queryParameters, data: _data)
                 .copyWith(baseUrl: baseUrl ?? _dio.options.baseUrl)));
     final value = UserModel.fromJson(_result.data!);
