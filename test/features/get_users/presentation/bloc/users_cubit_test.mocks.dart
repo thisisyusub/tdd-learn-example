@@ -12,7 +12,7 @@ import 'package:tdd_example/features/get_users/domain/entities/user.dart'
     as _i7;
 import 'package:tdd_example/features/get_users/domain/repositories/user_repository.dart'
     as _i2;
-import 'package:tdd_example/features/get_users/domain/usecases/get_users.dart'
+import 'package:tdd_example/features/get_users/domain/use_cases/get_users.dart'
     as _i4;
 
 // ignore_for_file: avoid_redundant_argument_values

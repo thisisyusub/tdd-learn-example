@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/no_params.dart';
 import '../../../../core/states/data_state.dart';
 import '../../domain/entities/user.dart';
-import '../../domain/usecases/get_users.dart';
+import '../../domain/use_cases/get_users.dart';
 
 class UserCubit extends Cubit<DataState<List<User>>> {
   final GetUsers getUsers;

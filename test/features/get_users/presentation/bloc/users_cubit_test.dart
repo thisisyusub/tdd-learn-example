@@ -7,7 +7,7 @@ import 'package:tdd_example/core/error/failure.dart' as error;
 import 'package:tdd_example/core/no_params.dart';
 import 'package:tdd_example/core/states/data_state.dart';
 import 'package:tdd_example/features/get_users/domain/entities/user.dart';
-import 'package:tdd_example/features/get_users/domain/usecases/get_users.dart';
+import 'package:tdd_example/features/get_users/domain/use_cases/get_users.dart';
 import 'package:tdd_example/features/get_users/presentation/bloc/users_cubit.dart';
 
 import '../../../../core/mocks/mock_users.dart';

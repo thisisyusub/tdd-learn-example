@@ -1,11 +1,11 @@
 import 'package:dartz/dartz.dart';
-import 'package:mockito/mockito.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 import 'package:tdd_example/core/no_params.dart';
-import 'package:tdd_example/features/get_users/domain/usecases/get_users.dart';
+import 'package:tdd_example/features/get_users/domain/use_cases/get_users.dart';
 
-import 'mock_user_repository.mocks.dart';
 import '../../../../core/mocks/mock_users.dart';
+import 'mock_user_repository.mocks.dart';
 
 void main() {
   late GetUsers usecase;
