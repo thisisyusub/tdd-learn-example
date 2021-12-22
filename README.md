@@ -1,3 +1,6 @@
+![GitHub Workflow Status](https://img.shields.io/github/workflow/status/thisisyusub/tdd-learn-example/Coverage)
+[![codecov](https://codecov.io/gh/thisisyusub/tdd-learn-example/branch/main/graph/badge.svg)](https://codecov.io/gh/thisisyusub/tdd-learn-example)
+
 # tdd_example
 
 A new Flutter project.
