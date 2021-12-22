@@ -19,11 +19,11 @@ Future<void> init() async {
   initRepositories();
   initDataSources();
   initCores();
-  initExternals();
+  await initExternals();
 }
 
 void initBlocs() {
-  getIt.registerFactory(() => UserCubit(getIt()));
+  getIt.registerFactory(() => UsersCubit(getIt()));
 }
 
 void initUseCases() {
@@ -56,12 +56,9 @@ void initCores() {
   );
 }
 
-void initExternals() {
-  //! External
-  getIt.registerLazySingletonAsync(() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs;
-  });
+Future<void> initExternals() async {
+  final prefs = await SharedPreferences.getInstance();
+  getIt.registerLazySingleton(() => prefs);
 
   getIt.registerLazySingleton(() => Dio());
 

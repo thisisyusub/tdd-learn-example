@@ -1,6 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tdd_example/core/states/data_state.dart';
-import 'package:tdd_example/features/get_users/domain/entities/user.dart';
 
 import '../mocks/mock_users.dart';
 
@@ -8,34 +7,66 @@ void main() {
   group(
     'DataState',
     () {
+      void buildExpectations<T>(
+        DataState<T> state, {
+        final bool isInProgress = false,
+        final bool isFailure = false,
+        final bool isSuccess = false,
+        final bool isEmpty = false,
+        final T? data,
+      }) {
+        expect(state.isInProgress, isInProgress);
+        expect(state.isFailure, isFailure);
+        expect(state.isSuccess, isSuccess);
+        expect(state.isEmpty, isEmpty);
+        expect(state.data, equals(data));
+      }
+
       test(
-        'should return instance of [Initial]',
+        'should return default values',
         () {
-          expect(const DataState.initial(), isA<Initial>());
+          buildExpectations(DataState.initial());
         },
       );
 
       test(
-        'should return instance of [InProgress]',
+        'should return [isInProgress = true]',
         () {
-          expect(const DataState.inProgress(), isA<InProgress>());
+          buildExpectations(
+            DataState.inProgress(),
+            isInProgress: true,
+          );
         },
       );
 
       test(
-        'should return instance of [Failure]',
+        'should return [isFailure = true]',
         () {
-          expect(const DataState.failure(), isA<Failure>());
+          buildExpectations(
+            DataState.failure(),
+            isFailure: true,
+          );
         },
       );
 
       test(
-        'should return instance of [Success] with data',
+        'should return [isEmpty = true]',
         () {
-          const state = DataState.success(users);
+          buildExpectations(
+            DataState.empty(),
+            isEmpty: true,
+          );
+        },
+      );
 
-          expect(state, isA<Success>());
-          expect((state as Success).data, isA<List<User>>());
+      test(
+        'should return [isSuccess = true] and data',
+        () {
+          buildExpectations(
+            DataState.success(users),
+            isSuccess: true,
+            data: users,
+          );
         },
       );
     },

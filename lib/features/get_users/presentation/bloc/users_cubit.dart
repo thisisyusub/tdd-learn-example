@@ -5,19 +5,23 @@ import '../../../../core/states/data_state.dart';
 import '../../domain/entities/user.dart';
 import '../../domain/use_cases/get_users.dart';
 
-class UserCubit extends Cubit<DataState<List<User>>> {
+export '../../../../core/states/data_state.dart';
+
+class UsersCubit extends Cubit<DataState<List<User>>> {
   final GetUsers getUsers;
 
-  UserCubit(this.getUsers) : super(const DataState.initial());
+  UsersCubit(this.getUsers) : super(DataState.initial());
 
   void fetchUsers() async {
-    emit(const DataState.inProgress());
+    emit(DataState.inProgress());
 
     final result = await getUsers(const NoParams());
 
     result.fold(
-      (failure) => emit(const DataState.failure()),
-      (success) => emit(DataState.success(success)),
+      (failure) => emit(DataState.failure()),
+      (success) => emit(
+        success.isEmpty ? DataState.empty() : DataState.success(success),
+      ),
     );
   }
 }
