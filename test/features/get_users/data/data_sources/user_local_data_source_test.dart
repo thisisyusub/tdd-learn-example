@@ -61,16 +61,16 @@ void main() {
 
       await dataSource.cacheUsers(userModels);
 
-      StringBuffer expectedUsersString = StringBuffer();
+      final usersString = <String>[];
 
       for (var user in userModels) {
-        expectedUsersString.write(json.encode(user.toJson()));
+        usersString.add(json.encode(user.toJson()));
       }
 
       verify(
         mockSharedPreferences.setString(
           cachedUsers,
-          expectedUsersString.toString(),
+          usersString.join(','),
         ),
       );
     });

@@ -24,13 +24,13 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
 
   @override
   Future<void> cacheUsers(List<UserModel> usersToCache) async {
-    final usersBuffer = StringBuffer();
+    final usersString = <String>[];
 
     for (var user in usersToCache) {
-      usersBuffer.write(json.encode(user.toJson()));
+      usersString.add(json.encode(user.toJson()));
     }
 
-    await sharedPreferences.setString(cachedUsers, usersBuffer.toString());
+    await sharedPreferences.setString(cachedUsers, usersString.join(','));
   }
 
   @override
