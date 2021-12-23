@@ -30,17 +30,21 @@ class UserLocalDataSourceImpl implements UserLocalDataSource {
       usersString.add(json.encode(user.toJson()));
     }
 
-    await sharedPreferences.setString(cachedUsers, usersString.join(','));
+    await sharedPreferences.setStringList(cachedUsers, usersString);
   }
 
   @override
   Future<List<UserModel>> getLastUsers() async {
-    final cachedUsersString = sharedPreferences.getString(cachedUsers);
+    final cachedUsersString = sharedPreferences.getStringList(cachedUsers);
+
+    final lastCachedUsers = <UserModel>[];
 
     if (cachedUsersString != null) {
-      final jsonMap = json.decode(cachedUsersString) as List<dynamic>;
+      for (var user in cachedUsersString) {
+        lastCachedUsers.add(UserModel.fromJson(json.decode(user)));
+      }
 
-      return jsonMap.map((e) => UserModel.fromJson(e)).toList();
+      return lastCachedUsers;
     } else {
       throw CacheException();
     }

@@ -29,13 +29,17 @@ void main() {
       'should return [User]s from [SharedPreferences] when there is'
       ' data in the cache',
       () async {
-        when(mockSharedPreferences.getString(any)).thenReturn(
-          fixture('users_cached.json'),
-        );
+        final usersString = <String>[];
+
+        for (var user in userModels) {
+          usersString.add(json.encode(user.toJson()));
+        }
+
+        when(mockSharedPreferences.getStringList(any)).thenReturn(usersString);
 
         final result = await dataSource.getLastUsers();
 
-        verify(mockSharedPreferences.getString(cachedUsers));
+        verify(mockSharedPreferences.getStringList(cachedUsers));
         expect(result, equals(expectedCachedUsers));
       },
     );
@@ -44,7 +48,7 @@ void main() {
       'should throw [CacheException] when there is no cached '
       'data in the cache',
       () async {
-        when(mockSharedPreferences.getString(any)).thenReturn(null);
+        when(mockSharedPreferences.getStringList(any)).thenReturn(null);
 
         final call = dataSource.getLastUsers;
 
@@ -55,7 +59,7 @@ void main() {
 
   group('cache users', () {
     test('should call [SharedPreferences] to cache users', () async {
-      when(mockSharedPreferences.setString(any, any)).thenAnswer(
+      when(mockSharedPreferences.setStringList(any, any)).thenAnswer(
         (_) async => true,
       );
 
@@ -67,12 +71,7 @@ void main() {
         usersString.add(json.encode(user.toJson()));
       }
 
-      verify(
-        mockSharedPreferences.setString(
-          cachedUsers,
-          usersString.join(','),
-        ),
-      );
+      verify(mockSharedPreferences.setStringList(cachedUsers, usersString));
     });
   });
 }
