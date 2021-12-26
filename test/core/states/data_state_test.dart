@@ -1,7 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:tdd_example/core/states/data_state.dart';
 
-import '../mocks/mock_users.dart';
+import '../../mocks/mock_users.dart';
 
 void main() {
   group(
