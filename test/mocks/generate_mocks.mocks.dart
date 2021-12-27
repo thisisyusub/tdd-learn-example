@@ -19,7 +19,9 @@ import 'package:tdd_example/data/data_sources/user_local_data_source.dart'
 import 'package:tdd_example/data/data_sources/user_remote_data_source.dart'
     as _i12;
 import 'package:tdd_example/data/models/user_model.dart' as _i11;
+import 'package:tdd_example/domain/entities/post.dart' as _i19;
 import 'package:tdd_example/domain/entities/user.dart' as _i14;
+import 'package:tdd_example/domain/repositories/post_repository.dart' as _i18;
 import 'package:tdd_example/domain/repositories/user_repository.dart' as _i4;
 import 'package:tdd_example/domain/use_cases/get_users.dart' as _i16;
 
@@ -255,6 +257,25 @@ class MockGetUsers extends _i1.Mock implements _i16.GetUsers {
           returnValue: Future<_i3.Either<_i13.Failure, List<_i14.User>>>.value(
               _FakeEither_1<_i13.Failure, List<_i14.User>>())) as _i6
           .Future<_i3.Either<_i13.Failure, List<_i14.User>>>);
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [PostRepository].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockPostRepository extends _i1.Mock implements _i18.PostRepository {
+  MockPostRepository() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i6.Future<_i3.Either<_i13.Failure, List<_i19.Post>>> getUserPosts(
+          int? userId) =>
+      (super.noSuchMethod(Invocation.method(#getUserPosts, [userId]),
+          returnValue: Future<_i3.Either<_i13.Failure, List<_i19.Post>>>.value(
+              _FakeEither_1<_i13.Failure, List<_i19.Post>>())) as _i6
+          .Future<_i3.Either<_i13.Failure, List<_i19.Post>>>);
   @override
   String toString() => super.toString();
 }
