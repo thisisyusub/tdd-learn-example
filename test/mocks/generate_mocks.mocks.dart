@@ -14,10 +14,13 @@ import 'package:shared_preferences/shared_preferences.dart' as _i5;
 import 'package:tdd_example/core/error/failure.dart' as _i13;
 import 'package:tdd_example/core/network/network_info.dart' as _i9;
 import 'package:tdd_example/core/no_params.dart' as _i17;
+import 'package:tdd_example/data/data_sources/post_remote_data_source.dart'
+    as _i20;
 import 'package:tdd_example/data/data_sources/user_local_data_source.dart'
     as _i10;
 import 'package:tdd_example/data/data_sources/user_remote_data_source.dart'
     as _i12;
+import 'package:tdd_example/data/models/post_model.dart' as _i21;
 import 'package:tdd_example/data/models/user_model.dart' as _i11;
 import 'package:tdd_example/domain/entities/post.dart' as _i19;
 import 'package:tdd_example/domain/entities/user.dart' as _i14;
@@ -276,6 +279,25 @@ class MockPostRepository extends _i1.Mock implements _i18.PostRepository {
           returnValue: Future<_i3.Either<_i13.Failure, List<_i19.Post>>>.value(
               _FakeEither_1<_i13.Failure, List<_i19.Post>>())) as _i6
           .Future<_i3.Either<_i13.Failure, List<_i19.Post>>>);
+  @override
+  String toString() => super.toString();
+}
+
+/// A class which mocks [PostRemoteDataSource].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockPostRemoteDataSource extends _i1.Mock
+    implements _i20.PostRemoteDataSource {
+  MockPostRemoteDataSource() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i6.Future<List<_i21.PostModel>> getUserPosts(int? userId) =>
+      (super.noSuchMethod(Invocation.method(#getUserPosts, [userId]),
+              returnValue:
+                  Future<List<_i21.PostModel>>.value(<_i21.PostModel>[]))
+          as _i6.Future<List<_i21.PostModel>>);
   @override
   String toString() => super.toString();
 }
