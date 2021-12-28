@@ -3,7 +3,22 @@
 
 # Flutter Clean Architecture with TDD (Test Driven Development)
 
-It is an example about TDD with Clean Architecture in Flutter apps. You can use it, if you want to learn the following topics:
+It is an example about TDD with Clean Architecture in Flutter apps. 
+
+<div style="text-align: center">
+    <table>
+        <tr>
+            <td style="text-align: center">
+                    <img src="screenshots/users.png" width="200"/>
+            </td>            
+            <td style="text-align: center">
+                    <img src="screenshots/user_posts.png"" width="200"/>
+            </td>     
+        </tr>
+    </table>
+</div>
+
+### You can use it, if you want to learn the following topics:
 
 - Clean Architecture based on Reso Coder Approach
 - DI (Depedency Injection)
