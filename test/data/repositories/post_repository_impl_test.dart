@@ -10,11 +10,11 @@ import '../../mocks/generate_mocks.mocks.dart';
 import '../../mocks/mock_post_models.dart';
 
 void main() {
-  late final PostRepositoryImpl postRepositoryImpl;
-  late final MockPostRemoteDataSource mockPostRemoteDataSource;
-  late final List<Post> posts;
+  late PostRepositoryImpl postRepositoryImpl;
+  late MockPostRemoteDataSource mockPostRemoteDataSource;
+  late List<Post> posts;
 
-  setUpAll(() {
+  setUp(() {
     mockPostRemoteDataSource = MockPostRemoteDataSource();
     postRepositoryImpl = PostRepositoryImpl(mockPostRemoteDataSource);
     posts = postModels;
