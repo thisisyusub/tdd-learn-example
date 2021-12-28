@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../injection_container.dart';
 import '../../domain/entities/user.dart';
+import '../app_router.dart';
 import '../bloc/users_cubit.dart';
-import '../global/failure_widget.dart';
-import '../global/loading_widget.dart';
-import 'widgets/user_item.dart';
+import '../widgets/failure_widget.dart';
+import '../widgets/list_item.dart';
+import '../widgets/loading_widget.dart';
 
 class UsersPage extends StatelessWidget {
   const UsersPage({Key? key}) : super(key: key);
@@ -30,8 +31,19 @@ class UsersPage extends StatelessWidget {
             } else if (state.isSuccess) {
               return ListView.builder(
                 itemBuilder: (_, index) {
-                  return UserItem(
-                    user: state.data![index],
+                  final user = state.data![index];
+
+                  return ListItem(
+                    leading: '${user.id}',
+                    title: user.name,
+                    body: user.email,
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        Routes.userPosts,
+                        arguments: user.id,
+                      );
+                    },
                   );
                 },
                 itemCount: state.data!.length,
