@@ -9,10 +9,10 @@ It is an example about TDD with Clean Architecture in Flutter apps.
     <table>
         <tr>
             <td style="text-align: center">
-                    <img src="screenshots/users.png" width="200"/>
+                    <img src="screenshots/image1.png" width="200"/>
             </td>            
             <td style="text-align: center">
-                    <img src="screenshots/user_posts.png"" width="200"/>
+                    <img src="screenshots/image2.png"" width="200"/>
             </td>     
         </tr>
     </table>
