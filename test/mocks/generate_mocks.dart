@@ -8,6 +8,7 @@ import 'package:tdd_example/data/data_sources/user_local_data_source.dart';
 import 'package:tdd_example/data/data_sources/user_remote_data_source.dart';
 import 'package:tdd_example/domain/repositories/post_repository.dart';
 import 'package:tdd_example/domain/repositories/user_repository.dart';
+import 'package:tdd_example/domain/use_cases/get_user_posts.dart';
 import 'package:tdd_example/domain/use_cases/get_users.dart';
 
 @GenerateMocks(
@@ -22,6 +23,7 @@ import 'package:tdd_example/domain/use_cases/get_users.dart';
     GetUsers,
     PostRepository,
     PostRemoteDataSource,
+    GetUserPosts,
   ],
 )
 void generateMocks() {}
