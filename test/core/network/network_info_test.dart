@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:tdd_example/core/network/network_info.dart';
 
-import 'mock_connectivity_plus.mocks.dart';
+import '../../mocks/generate_mocks.mocks.dart';
 
 void main() {
   late NetworkInfoImpl networkInfoImpl;

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'injection_container.dart' as di;
+import 'presentation/app_router.dart';
 import 'presentation/pages/users_page.dart';
 
 void main() async {
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.brown,
       ),
       home: const UsersPage(),
+      onGenerateRoute: AppRouter.onGenerateRoute,
     );
   }
 }
